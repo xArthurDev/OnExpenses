@@ -243,4 +243,21 @@ export class ExpenseService extends PrismaHelpers {
       throw new BadRequestException('Error updating expense');
     }
   }
+
+  async delete(id: string) {
+    try {
+      await this.prisma.expense.delete({
+        where: {
+          id,
+        },
+      });
+      this.logger.verbose(`Expense ${id} has been deleted`);
+      return {
+        status: 'success',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException('Error deleting expense');
+    }
+  }
 }

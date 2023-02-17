@@ -3,6 +3,7 @@ import { ExpenseService } from './expense.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -126,5 +127,13 @@ export class ExpenseController {
     const accessToken = request.headers.authorization;
     const decryptedToken = this.authService.decryptJwt(accessToken);
     return decryptedToken;
+  }
+
+  @UseGuards(AccessPermissionGuard)
+  @Delete('delete/:id')
+  @ApiOperation({ summary: 'Deletar despesa' })
+  async delete(@Param('id') id: string) {
+    this.logger.verbose(`User is trying to delete expense`);
+    return await this.expenseService.delete(id);
   }
 }
