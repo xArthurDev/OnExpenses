@@ -11,6 +11,10 @@
 
 API para criação e controle de despesas (CRUD) com Autenticação JWT, API feita em Nest.js.
 
+## Environment
+
+Tenha certeza que você possui o arquivo <strong>.env</strong> antes de tentar rodar a aplicação, caso não tenha, entre em contato pelo email <strong>arthurrguimaraes12@gmail.com</strong>
+
 ## Installation
 
 ```bash
