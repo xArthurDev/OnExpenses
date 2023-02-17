@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email    String    @unique
+  password String
+  name     String
+  meta     Meta
+  tokens   Token[]
+  expenses Expense[]
+}
+
+type Meta {
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime?
+  updatedBy        String?   @db.ObjectId
+  createdBy        String?   @db.ObjectId
+  lastBrowserAgent String?
+  lastIpAddress    String?
+}
+
+model Token {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @db.Date
+  expiresAt DateTime @db.Date
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.ObjectId
+  token     String   @unique
+}
+
+model Expense {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  meta        Meta
+  description String
+  date        DateTime @db.Date
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @db.ObjectId
+  amount      Float
+}
